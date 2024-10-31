@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Mapping Module -->
+    <arg name="config_file" value="$(find mapping_module)/cfg/dataset.json"/>
+    <node pkg="mapping_module" type="mapping_module" name="mapping_module" output="screen">
+        <arg>--config $(arg config_file)</args>
+    </node>
+
+    <!-- State Machine-->
+    <!-- <node pkg="apple_picking_state_machine" type="apple_picking_state_machine" name="apple_picking_state_machine"/> -->
+
+</launch>

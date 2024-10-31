@@ -41,13 +41,17 @@ namespace apple_picking {
         void mapping_service_thread();
         void map_callback(const sensor_msgs::PointCloud2::ConstPtr& msg);
 
-
         bool start_srv_callback(std_srvs::Trigger::Request& req, std_srvs::Trigger::Response& res);
         bool shutdown_srv_callback(std_srvs::Trigger::Request& req, std_srvs::Trigger::Response& res);
+
+        void summary();
         void shutdown();
         
+        void map_cloud_callback(const sensor_msgs::PointCloud2::ConstPtr& msg);
+
 
     private:    // Members
+        int iteration_counter_ = 1;
         std::atomic<SMState> sm_state_;
 
         std::vector<std::thread> threads_;
@@ -55,10 +59,10 @@ namespace apple_picking {
         ros::ServiceServer start_srv_, shutdown_srv_;        
         std::atomic<bool> shutdown_;
 
-        // std::thread mSpinThread;
-        // ros::ServiceServer mStateService;
         ros::ServiceClient arm_client_, mapping_client_;
         ros::ServiceClient arm_client_shutdown_, mapping_client_shutdown_;
+        
+        ros::Subscriber pointcloud_save_sub_;
 
         // ros::Subscriber arm_state_sub_, mapping_state_sub_;
         ComponentState arm_state_, mapping_state_;
@@ -73,10 +77,14 @@ namespace apple_picking {
         // ros::Publisher state_pub_;
 
         std::chrono::steady_clock::time_point iter_start_time_;
+        std::chrono::steady_clock::time_point system_start_time_;
+        std::chrono::duration<double> arm_total_time_;
+        std::chrono::duration<double> mapping_total_time_;
 
         const int TIMEOUT = 300; // seconds
         const int PROGRESS_UPDATE_RATE = 100; // milliseconds
 
         // ProgressManager progress_manager_;
+        std::string pointcloud_filename_;
     };
 }

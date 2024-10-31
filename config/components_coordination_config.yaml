@@ -1,0 +1,6 @@
+map_cloud: 
+    save: true
+    save_dir: "/home/quanvu/Desktop/mvps_map_clouds"
+
+pcd_publisher:
+    file_path: "/home/quanvu/Desktop/mvps_map_clouds/APPLE_ONLY_map_cloud_2024_10_31_21_50_38.pcd"

@@ -34,6 +34,9 @@
   <!-- Use depend as a shortcut for packages that are both build and exec dependencies -->
   <depend>roscpp</depend>
   <depend>std_srvs</depend>
+  <depend>pcl_ros</depend>
+  <depend>pcl_conversions</depend>
+
   <!--   Note that this is equivalent to the following: -->
   <!--   <build_depend>roscpp</build_depend> -->
   <!--   <exec_depend>roscpp</exec_depend> -->

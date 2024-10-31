@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="filter_pointcloud"/>
+
+    <!-- Load the simulated UR5e robot arm and camera in Gazebo -->
+    <include file="$(find arm_module_gazebo)/launch/arm_module_ur5e_bringup.launch"/>
+
+    <!-- Depth Processing -->
+    <include file="$(find apple_picking_state_machine)/launch/depth_processing.launch">
+        <arg name="always_pub_normals" value="false"/>
+        <arg name="filter_pointcloud" value="$(arg filter_pointcloud)"/>
+    </include>
+
+    <!-- Arm Module -->
+    <include file="$(find arm_module_ur5e_moveit_config)/launch/moveit_planning_execution.launch">
+        <arg name="sim" value="true"/>
+    </include>
+
+    <node pkg="arm_module_ur5e_controller" type="run_robot_controller.py" name="run_robot_controller"/>
+
+    <!-- Mapping Module -->
+    <node pkg="mapping_module" type="mapping_module" name="mapping_module" output="screen"/>
+
+    <!-- State Machine-->
+    <!-- <node pkg="apple_picking_state_machine" type="apple_picking_state_machine" name="apple_picking_state_machine"/> -->
+
+    <!-- Pointcloud Filter -->
+    <!-- <node pkg="pointcloud_filter" type="pointcloud_filter" name="pointcloud_filter" output="screen"/> -->
+    <include file="$(find pointcloud_filter)/launch/pointcloud_filter.launch">
+        <arg name="filter_pointcloud" value="$(arg filter_pointcloud)"/>
+    </include>
+
+
+
+</launch>
