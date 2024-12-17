@@ -1,4 +1,6 @@
 # Apple Picking State Machine
+**A module of my capstone - Automation in Apple Picking**
+
 A revised state machine for the active perception set up in the apple picking project - MVPS
 It is based on the state machine module in MVPS, with modifications suitable for my capstone in apple scene selective reconstruction.
 
