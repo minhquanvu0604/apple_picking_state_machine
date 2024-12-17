@@ -1,6 +1,46 @@
 # apple_picking_state_machine
 A revised state machine for the active perception set up in the apple picking project - MVPS
-It is based on the state machine module in MVPS, with modifications suitable for my capstone  (TODO: elaborate)
+It is based on the state machine module in MVPS, with modifications suitable for my capstone in apple scene selective reconstruction.
+
+<p align="center">
+  <img width="60%" alt="Reconstruction Example Result" src="wiki/image/2024-11-01_15-45.png">
+</p>
+
+## States
+<p align="center">
+  <img width="40%" alt="Reconstruction Example Result" src="wiki/image/state_machine.jpg">
+</p>
+
+System states:
+- `IDLE` The state machine is at rest, waiting for both the arm and mapping services
+to be ready. It monitors the availability of these components and confirms that the
+necessary services are active before progressing to the next state. This state acts
+as a starting or resting phase and can be returned to if the system needs to halt or
+reset.
+- `BOTH PROCESSING` Both the arm and mapping components are actively engaged
+in their respective tasks. The arm is moving to its next goal position, and the
+mapping component is processing data or updating the map. This state manages
+parallel processing, where both components work simultaneously, and it tracks the
+completion status of each component to determine the next transition.
+- `WAIT FOR ARM` Occurs when the mapping component has completed its task but the
+arm has not yet reached its goal position. In this state, the state machine pauses to
+wait for the arm component to complete its movement or processing. Once the arm
+signals completion, the state machine can move forward.
+- `WAIT FOR MAPPING` Similar to WAIT FOR ARM, this state is triggered when the arm
+has reached its goal, but the mapping component still needs more time to complete
+its data processing or map update.
+
+The user interacts with the state machine in the following ways:
+- Kickstart the pipeline by calling `/start` service: Given successful, it transitions the
+State Machine from resting IDLE state to BOTH PROCESSING, and repeatedly functions
+through all the cycles before reaching the end of the pose list.
+- Halt the system by calling `/shutdown` service: Gracefully shut down the Mapping
+and Arm Module.
+
+## ROS Graph
+<p align="center">
+  <img width="70%" alt="ROS Graph" src="wiki/image/ros_graph.jpg">
+</p>
 
 # Depth Processing
 ## Depth Image Processing for Gazebo
@@ -32,6 +72,10 @@ Includes the types of topics similar to the Gazebo simulation and some extra top
     - /arm_module_camera/color/camera_info - RGB camera info
   - Output: 
     - /arm_module_camera/depth_registered/points - XYZRGB point cloud
+
+<p align="center">
+  <img width="70%" alt="Image Processing Pipeline" src="wiki/image/image_proc_flowchart.jpg">
+</p>
 
 # Dependency
 `indicators` https://github.com/p-ranav/indicators?tab=readme-ov-file#building-samples 
